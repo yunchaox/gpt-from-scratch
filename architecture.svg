@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" viewBox="0 0 680 512" role="img" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<title>Architecture of a character-level GPT</title>
+<desc>Forward pass from input token ids through embeddings, six pre-norm transformer blocks, a final LayerNorm and a linear head to output logits, with one block expanded to show LayerNorm, causal attention, MLP, and two residual connections.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 2 L8 5 L2 8 Z" fill="#888780"/></marker></defs>
+
+<rect x="60" y="58" width="240" height="42" rx="6" fill="#F1EFE8" stroke="#5F5E5A"/>
+<text x="180" y="76" text-anchor="middle" fill="#2C2C2A" font-size="14" font-weight="500">Input tokens</text>
+<text x="180" y="92" text-anchor="middle" fill="#2C2C2A" font-size="12">(B, T) char ids</text>
+<line x1="180" y1="100" x2="180" y2="126" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<rect x="60" y="126" width="240" height="42" rx="6" fill="#EEEDFE" stroke="#534AB7"/>
+<text x="180" y="144" text-anchor="middle" fill="#26215C" font-size="14" font-weight="500">Embeddings</text>
+<text x="180" y="160" text-anchor="middle" fill="#26215C" font-size="12">token + positional &#8594; (B, T, C)</text>
+<line x1="180" y1="168" x2="180" y2="194" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<rect x="60" y="194" width="240" height="42" rx="6" fill="#E1F5EE" stroke="#0F6E56"/>
+<text x="180" y="212" text-anchor="middle" fill="#04342C" font-size="14" font-weight="500">Transformer block &#215; 6</text>
+<text x="180" y="228" text-anchor="middle" fill="#04342C" font-size="12">pre-norm + residual</text>
+<line x1="180" y1="236" x2="180" y2="262" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<rect x="60" y="262" width="240" height="42" rx="6" fill="#EEEDFE" stroke="#534AB7"/>
+<text x="180" y="280" text-anchor="middle" fill="#26215C" font-size="14" font-weight="500">Final LayerNorm</text>
+<text x="180" y="296" text-anchor="middle" fill="#26215C" font-size="12">ln_f</text>
+<line x1="180" y1="304" x2="180" y2="330" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<rect x="60" y="330" width="240" height="42" rx="6" fill="#EEEDFE" stroke="#534AB7"/>
+<text x="180" y="348" text-anchor="middle" fill="#26215C" font-size="14" font-weight="500">LM head &#8212; linear</text>
+<text x="180" y="364" text-anchor="middle" fill="#26215C" font-size="12">(B, T, C) &#8594; (B, T, vocab)</text>
+<line x1="180" y1="372" x2="180" y2="398" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<rect x="60" y="398" width="240" height="42" rx="6" fill="#F1EFE8" stroke="#5F5E5A"/>
+<text x="180" y="416" text-anchor="middle" fill="#2C2C2A" font-size="14" font-weight="500">Softmax &#8594; sample</text>
+<text x="180" y="432" text-anchor="middle" fill="#2C2C2A" font-size="12">next-token generation</text>
+
+<line x1="300" y1="215" x2="348" y2="198" stroke="#888780" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+<rect x="350" y="150" width="300" height="252" rx="8" fill="none" stroke="#888780" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="364" y="170" fill="#888780" font-size="12">inside one block</text>
+
+<line x1="475" y1="176" x2="475" y2="188" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="375" y="188" width="200" height="44" rx="6" fill="#E1F5EE" stroke="#0F6E56"/>
+<text x="475" y="208" text-anchor="middle" fill="#04342C" font-size="14" font-weight="500">LayerNorm &#8594; attention</text>
+<text x="475" y="224" text-anchor="middle" fill="#04342C" font-size="12">6 heads &#183; causal mask</text>
+<line x1="475" y1="232" x2="475" y2="242" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+<circle cx="475" cy="254" r="12" fill="#F1EFE8" stroke="#5F5E5A"/>
+<text x="475" y="259" text-anchor="middle" fill="#2C2C2A" font-size="14">+</text>
+<line x1="475" y1="266" x2="475" y2="276" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="375" y="276" width="200" height="44" rx="6" fill="#EEEDFE" stroke="#534AB7"/>
+<text x="475" y="296" text-anchor="middle" fill="#26215C" font-size="14" font-weight="500">LayerNorm &#8594; MLP</text>
+<text x="475" y="312" text-anchor="middle" fill="#26215C" font-size="12">linear 4&#215; &#8594; GELU &#8594; linear</text>
+<line x1="475" y1="320" x2="475" y2="330" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+<circle cx="475" cy="344" r="12" fill="#F1EFE8" stroke="#5F5E5A"/>
+<text x="475" y="349" text-anchor="middle" fill="#2C2C2A" font-size="14">+</text>
+<line x1="475" y1="356" x2="475" y2="384" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text x="475" y="396" text-anchor="middle" fill="#888780" font-size="12">&#8594; next block</text>
+
+<polyline points="475,184 614,184 614,254 491,254" fill="none" stroke="#888780" stroke-width="1" marker-end="url(#arrow)"/>
+<polyline points="475,270 630,270 630,344 491,344" fill="none" stroke="#888780" stroke-width="1" marker-end="url(#arrow)"/>
+
+<text x="60" y="466" fill="#888780" font-size="12">d_model 384 &#183; 6 heads &#183; 6 layers &#183; block_size 256 &#183; vocab &#8776; 65 &#183; dropout 0.2</text>
+<rect x="60" y="480" width="12" height="12" rx="3" fill="#E1F5EE" stroke="#0F6E56"/>
+<text x="78" y="490" fill="#888780" font-size="12">attention</text>
+<rect x="170" y="480" width="12" height="12" rx="3" fill="#EEEDFE" stroke="#534AB7"/>
+<text x="188" y="490" fill="#888780" font-size="12">embeddings &#183; norm &#183; MLP &#183; head</text>
+<rect x="420" y="480" width="12" height="12" rx="3" fill="#F1EFE8" stroke="#5F5E5A"/>
+<text x="438" y="490" fill="#888780" font-size="12">structural &#183; residual add</text>
+</svg>

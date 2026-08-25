@@ -25,6 +25,9 @@ Semantically it's nonsense — it's a tiny model — but starting from character
 ## Architecture
 
 Standard decoder-only GPT:
+<p align="center">
+  <img src="architecture.svg" alt="GPT architecture diagram" width="680">
+</p>
 
 - **Token + learned positional embeddings**, summed → `(B, T, C)`.
 - **N stacked transformer blocks**, each = causal multi-head self-attention + position-wise MLP, **pre-norm** with residual connections.
