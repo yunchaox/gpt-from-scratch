@@ -1,0 +1,22 @@
+# Data (downloaded on first run by data.py)
+input.txt
+
+# Model checkpoints / artifacts
+*.pt
+*.pth
+*.ckpt
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
