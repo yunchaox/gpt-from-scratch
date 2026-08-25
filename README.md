@@ -1,4 +1,4 @@
-# minGPT-from-scratch — a character-level GPT built line by line
+# GPT-from-scratch — a character-level GPT built line by line
 
 A decoder-only transformer (GPT) implemented **from scratch in PyTorch** and trained to generate Shakespeare-style text at the character level. Every component — attention, LayerNorm, the transformer block, the training loop, and autoregressive generation — is written by hand to understand *why* the architecture is shaped the way it is, not just how to call it.
 
