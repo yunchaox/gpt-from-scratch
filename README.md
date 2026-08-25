@@ -52,7 +52,7 @@ First generation came out as pure noise despite a trained model. Rather than twe
 ## Run
 
 ```bash
-pip install torch
+pip install -r requirements.txt
 python train.py      # trains, prints loss, saves the model
 python generate.py   # samples text from the trained model
 ```
