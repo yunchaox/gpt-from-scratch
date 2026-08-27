@@ -2,8 +2,6 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 
-from hyperparameters import device
-
 class LayerNorm(nn.Module):
     def __init__(self,dim: int, eps: float=1e-5):
         super().__init__()
@@ -104,7 +102,7 @@ class GPTLanguageModel(nn.Module):
 
     def forward(self, idx: torch.Tensor, targets: torch.Tensor=None) -> tuple[torch.Tensor, torch.Tensor]:
         B, T = idx.shape
-        x = self.token_embedding(idx) + self.position_embedding(torch.arange(T, device=device))
+        x = self.token_embedding(idx) + self.position_embedding(torch.arange(T, device=idx.device))
         x = self.blocks(x)
         x = self.ln_f(x)
         logits = self.lm_head(x)
