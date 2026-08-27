@@ -6,11 +6,14 @@ A decoder-only transformer (GPT) implemented **from scratch in PyTorch** and tra
 
 ## Results
 
-Training loss fell from initialization at ≈ `ln(vocab_size)` (uniform-guessing baseline) to ~1.1 over 2.5k steps:
+Loss fell from initialization at ≈ `ln(vocab_size)` ≈ 4.17 (the uniform-guessing baseline) toward ~1.6 over 3k steps. Both splits are measured the same way — averaged over 200 batches with dropout disabled (`model.eval()`) — so the train/val gap is a real generalization signal, not a dropout artifact:
 
-| step | 0 | 500 | 1000 | 1500 | 2000 | 2500 |
-|---|---|---|---|---|---|---|
-| loss | 4.29 | 1.79 | 1.47 | 1.32 | 1.22 | 1.12 |
+| step | 0 | 500 | 1000 | 1500 | 2000 | 2500 | 2999 |
+|---|---|---|---|---|---|---|---|
+| **train** | 4.05 | 2.32 | 1.91 | 1.71 | 1.58 | 1.50 | 1.44 |
+| **val** | 4.05 | 2.35 | 2.01 | 1.86 | 1.77 | 1.70 | 1.65 |
+
+Train and val start on top of each other and separate slowly (final gap ≈ 0.21 nats) — mild, expected overfitting for a ~10.8M-parameter model on a ~1MB corpus. Crucially, **val loss keeps falling the whole way** and never turns back up, so training stopped at a sensible point rather than past it. Longer training would need regularization or more data to keep closing the gap.
 
 Sample generation (untrained → gibberish; trained → learns the *form* of a play):
 
