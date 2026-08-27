@@ -1,4 +1,4 @@
-from hyperparameters import device, max_iters, eval_interval, seed, lr, d_model, n_heads, block_size, n_layers, dropout
+from hyperparameters import device, max_iters, eval_iters,eval_interval, seed, lr, d_model, n_heads, block_size, n_layers, dropout
 from model import GPTLanguageModel
 from data import get_batch, vocab_size
 import torch
@@ -30,9 +30,24 @@ def train():
         optimizer.step()
         # Outputs the loss every eval_interval steps or when the loop finishes.
         if step % eval_interval == 0 or step == max_iters - 1:
-            print(f"step {step}: loss {loss.item()}")
+            losses = evaluate(model=model, eval_iters=eval_iters)
+            print(f"step {step}: train loss {losses['train']:.3f}, eval loss {losses['val']:.3f}")
     torch.save(model.state_dict(), "model.pt")
     print("Model saved to model.pt")
+
+@torch.no_grad()
+def evaluate(model, eval_iters=200):
+    model.eval()
+    out = {}
+    for split in ["train", "val"]:
+        losses = torch.zeros(eval_iters)
+        for k in range(eval_iters):
+            xb, yb = get_batch(split)
+            logits, loss = model(xb, yb)
+            losses[k] = loss.item() 
+        out[split] = losses.mean().item()
+    model.train()
+    return out
 
 if __name__ == "__main__":
     train()
